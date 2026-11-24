@@ -6,13 +6,17 @@ import { createDataStore } from './dataStore.ts';
 import { createMarketStore } from './cache.ts';
 import { createReferenceStore } from './referenceCache.ts';
 import { createFxStore } from './fxCache.ts';
+export function supportsEstimate(symbol: string) {
+  return symbol !== 'QQQ5.L';
+}
+
 export function createEstimateStore(directory: string) {
   const markets = createMarketStore(directory);
   const references = createReferenceStore(directory);
   const currencies = createFxStore(directory);
   async function inputs(symbol: string) {
     const instrument = instrumentFor(symbol);
-    if (instrument.symbol === 'QQQ5.L') { throw new Error('QQQ5의 상장 전 추정은 지원하지 않습니다.'); }
+    if (!supportsEstimate(instrument.symbol)) { throw new Error('QQQ5의 상장 전 추정은 지원하지 않습니다.'); }
     const [market, index, rates, fx, calendar] = await Promise.all([
       markets.get(symbol), references.get(underlyingIndex(instrument.symbol)), references.get('DFF'),
       instrument.currency === 'KRW' ? currencies.get('USD-KRW') : undefined,

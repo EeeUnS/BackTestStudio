@@ -5,7 +5,7 @@ import { referenceIds } from '../src/data/reference.ts';
 import { createMarketStore } from './cache.ts';
 import { createFxStore } from './fxCache.ts';
 import { createReferenceStore } from './referenceCache.ts';
-import { createEstimateStore } from './estimateCache.ts';
+import { createEstimateStore, supportsEstimate } from './estimateCache.ts';
 import { createTaxBasisStore } from './taxBasis.ts';
 import { fetchMarketUpdate } from './marketUpdate.ts';
 
@@ -41,7 +41,7 @@ for (const id of referenceIds) {
 for (const { symbol, currency } of instruments) {
   files.set(`market/${symbol}`, await load(markets, symbol));
   if (currency === 'KRW') files.set(`tax-basis/${symbol}`, await load(taxes, symbol));
-  files.set(`estimate/${symbol}`, (await estimates.get(symbol)).data);
+  if (supportsEstimate(symbol)) files.set(`estimate/${symbol}`, (await estimates.get(symbol)).data);
 }
 
 for (const [name, data] of files) {
