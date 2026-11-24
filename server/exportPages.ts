@@ -40,7 +40,13 @@ for (const id of referenceIds) {
 
 for (const { symbol, currency } of instruments) {
   files.set(`market/${symbol}`, await load(markets, symbol));
-  if (currency === 'KRW') files.set(`tax-basis/${symbol}`, await load(taxes, symbol));
+  if (currency === 'KRW') {
+    try {
+      files.set(`tax-basis/${symbol}`, await load(taxes, symbol));
+    } catch (error) {
+      console.warn(`Skipping tax basis for ${symbol}:`, error);
+    }
+  }
   if (supportsEstimate(symbol)) files.set(`estimate/${symbol}`, (await estimates.get(symbol)).data);
 }
 
