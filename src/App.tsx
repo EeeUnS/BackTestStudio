@@ -161,6 +161,8 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
   const firstDate = timeline[0]?.date ?? '';
   const lastDate = data?.bars.at(-1)?.date ?? '';
   const marketToday = new Intl.DateTimeFormat('en-CA', { timeZone: instrument.zone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const rangeEnd = marketToday < lastDate ? lastDate : marketToday;
+  const calculationEnd = end > lastDate ? lastDate : end;
   useEffect(() => {
     setActive(false);
     if (!data) { return; }
@@ -168,13 +170,13 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
     const date = new Date(marketToday);
     date.setUTCFullYear(date.getUTCFullYear() - 5);
     setStart([data.bars[0].date, date.toISOString().slice(0, 10), latest].sort()[1]);
-    setEnd(latest);
+    setEnd(rangeEnd);
   }, [data]);
   useEffect(() => { if (firstDate) { setStart(value => value && value < firstDate ? firstDate : value); } }, [firstDate]);
   const request = useMemo<CalculationRequest | undefined>(() => {
     if (!active || !data || !start || !end || !accountValid || (!isQqq5 && !phaseSettings.account) || (usesNasdaq && !nasdaq) || !['hold', 'dca', 'sma200', 'nasdaq-sma200', 'infinite', 'vr'].includes(kind)) { return undefined; }
     const account = phaseSettings.account || 'general';
-    return { start, end, ...(isQqq5 ? {} : { account, withdrawals,
+    return { start, end: calculationEnd, ...(isQqq5 ? {} : { account, withdrawals,
       tax:{enabled:phaseSettings.taxEnabled,account,costMethod:phaseSettings.costMethod,scenario:phaseSettings.scenario} }),
       reportInKrw: fxEnabled && Boolean(fxData) && instrument.currency === 'USD', strategy: kind === 'hold' || kind === 'sma200' || kind === 'nasdaq-sma200' ? { kind, capital: Number(capital) }
       : kind === 'dca' ? { kind: 'dca', contribution: Number(contribution), interval }
@@ -184,7 +186,7 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
         initialValue: Number(vrValue), gradient: Number(vrGradient), annualGradientIncrease: Number(vrAnnual), band: Number(vrBand) / 100,
         cycleDays: Number(vrCycle), poolUse: Number(vrPool) / 100, flowAmount: Number(vrFlow), flowDays: Number(vrFlowDays),
         ...(vrWithdrawalStart ? { withdrawalStart: vrWithdrawalStart } : {}), tick: Number(vrTick) } };
-  }, [active, data, start, end, kind, capital, contribution, interval, run, splits, target, reinvestment, tick, vrMode, vrAdvanced, vrStock, vrValue, vrGradient, vrAnnual, vrBand, vrCycle, vrPool, vrFlow, vrFlowDays, vrWithdrawalStart, vrTick, fxEnabled, fxData, instrument.currency,phaseSettings,withdrawals,accountValid,usesNasdaq,nasdaq,isQqq5]);
+  }, [active, data, start, end, calculationEnd, kind, capital, contribution, interval, run, splits, target, reinvestment, tick, vrMode, vrAdvanced, vrStock, vrValue, vrGradient, vrAnnual, vrBand, vrCycle, vrPool, vrFlow, vrFlowDays, vrWithdrawalStart, vrTick, fxEnabled, fxData, instrument.currency,phaseSettings,withdrawals,accountValid,usesNasdaq,nasdaq,isQqq5]);
   const calculation = useBacktest(data, request, fxData, estimate,taxBasis.data, usesNasdaq ? nasdaq?.data : undefined);
   const result = calculation.result;
   const timelineEvents=useMemo<TimelineEvent[]>(()=>[
@@ -209,20 +211,22 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
   const metric = (value: Metric | undefined) => !value ? '—' : value.available ? percent(value.value) : value.reason;
   const startIndex = data ? Math.max(0, timeline.findIndex(bar => bar.date >= start)) : 0;
   const endIndex = data ? Math.max(0, timeline.findLastIndex(bar => bar.date <= end)) : 0;
+  const endSliderMax = rangeEnd > lastDate ? timeline.length : timeline.length - 1;
+  const endSliderValue = end === rangeEnd && rangeEnd > lastDate ? endSliderMax : endIndex;
   const requestedQuickStart = useMemo(() => {
     if (!lastDate || !quickYears) { return ''; }
-    const date = new Date(lastDate);
+    const date = new Date(rangeEnd);
     date.setUTCFullYear(date.getUTCFullYear() - quickYears);
     return date.toISOString().slice(0, 10);
-  }, [lastDate, quickYears]);
+  }, [lastDate, rangeEnd, quickYears]);
   function quickPeriod(years: number) {
     if (!data) { return; }
     if (holdingPreview) { setFixedHolding(false); setHoldingMessage(''); }
     setQuickYears(years);
-    const date = new Date(lastDate);
+    const date = new Date(rangeEnd);
     date.setUTCFullYear(date.getUTCFullYear() - years);
-    setStart(years === 0 ? firstDate : [firstDate, date.toISOString().slice(0, 10)].sort().at(-1)!);
-    setEnd(lastDate);
+    setStart(years === 0 ? firstDate : [firstDate, date.toISOString().slice(0, 10), lastDate].sort()[1]);
+    setEnd(rangeEnd);
   }
   function movePeriod(amount: number) {
     if (!data) { return; }
@@ -338,9 +342,10 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
         {data && <><PriceChart data={data} estimate={estimate} result={result} markers={markers} start={start} end={end} onInspect={inspect} accountDate={account?.date} events={timelineEvents} onRange={changeRange} />
           <HistoryNavigator data={timelineData} start={start} end={end} onRange={changeRange} />
           <div className="period-controls"><div className="quick-periods">{[1, 3, 5, 10, 0].map(years => <button key={years} onClick={() => { quickPeriod(years); }}>{years ? `${years}년` : '전체'}</button>)}</div>
-            {requestedQuickStart && requestedQuickStart < firstDate && start === firstDate && end === lastDate && <p className="hint" role="status">요청한 {quickYears}년의 시작일 {requestedQuickStart}보다 현재 데이터가 늦게 시작하므로 {firstDate}부터 선택했습니다. {estimate ? '확보된 기초지수·환율·거래일 이전의 추정 가격은 생성하지 않습니다.' : '현재 실제 시세만 사용 중입니다. 추정 데이터 포함을 선택하면 확보 가능한 상장 전 구간을 추가합니다.'}</p>}
-            <div className="date-fields"><label>시작일<input aria-label="시작일" type="date" min={firstDate} max={end || lastDate} value={start} onChange={event => { changeRange(event.target.value, end); }} /></label><label>종료일<input aria-label="종료일" type="date" min={start || firstDate} max={lastDate} value={end} disabled={holdingPreview && fixedHolding} onChange={event => { changeRange(start, event.target.value); }} /></label></div>
-            <div className="range-fields"><label>시작 범위<input aria-label="시작 범위" type="range" min="0" max={Math.max(0, endIndex)} value={startIndex} onChange={event => { changeRange(timeline[Number(event.target.value)].date, end); }} /></label><label>종료 범위<input aria-label="종료 범위" type="range" min={startIndex} max={timeline.length - 1} value={endIndex} disabled={holdingPreview && fixedHolding} onChange={event => { changeRange(start, timeline[Number(event.target.value)].date); }} /></label></div>
+            {requestedQuickStart && requestedQuickStart < firstDate && start === firstDate && end === rangeEnd && <p className="hint" role="status">요청한 {quickYears}년의 시작일 {requestedQuickStart}보다 현재 데이터가 늦게 시작하므로 {firstDate}부터 선택했습니다. {estimate ? '확보된 기초지수·환율·거래일 이전의 추정 가격은 생성하지 않습니다.' : '현재 실제 시세만 사용 중입니다. 추정 데이터 포함을 선택하면 확보 가능한 상장 전 구간을 추가합니다.'}</p>}
+            <div className="date-fields"><label>시작일<input aria-label="시작일" type="date" min={firstDate} max={end && end < lastDate ? end : lastDate} value={start} onChange={event => { changeRange(event.target.value, end); }} /></label><label>종료일<input aria-label="종료일" type="date" min={start || firstDate} max={rangeEnd} value={end} disabled={holdingPreview && fixedHolding} onChange={event => { changeRange(start, event.target.value); }} /></label></div>
+            {end > lastDate && <p className="hint">선택 종료일 {end} · 마지막 확정 일봉 {lastDate}까지 계산합니다.</p>}
+            <div className="range-fields"><label>시작 범위<input aria-label="시작 범위" type="range" min="0" max={Math.max(0, endIndex)} value={startIndex} onChange={event => { changeRange(timeline[Number(event.target.value)].date, end); }} /></label><label>종료 범위<input aria-label="종료 범위" type="range" min={startIndex} max={holdingPreview && fixedHolding ? timeline.length - 1 : endSliderMax} value={holdingPreview && fixedHolding ? endIndex : endSliderValue} disabled={holdingPreview && fixedHolding} onChange={event => { changeRange(start, timeline[Number(event.target.value)]?.date ?? rangeEnd); }} /></label></div>
             <div className="quick-periods"><button onClick={() => { movePeriod(-22); }}>← 22거래일</button><button onClick={() => { movePeriod(22); }}>22거래일 →</button><small>확대·이동은 표시만 변경합니다. 데이터가 부족한 빠른 기간은 실제 시작일까지만 선택합니다.</small></div>
           </div><div className="chart-meta">{firstDate} ~ {lastDate} · {timeline.length.toLocaleString()} 거래일 · {import.meta.env.MODE === 'pages' ? '배포 데이터' : response?.cache === 'cached' ? '파일 캐시' : '신규 조회'}{response?.stale ? (import.meta.env.MODE === 'pages' ? ' · 오래된 캐시' : ' · 최신 시세 조회 실패로 기존 캐시 표시') : ''}<br />거래소 기준일 {marketToday} · 마지막 일봉 {lastDate}<br />수집: {new Date(data.fetchedAt).toLocaleString('ko-KR')} · 버전 {data.version.slice(0, 12)} · 차트는 분할수정 가격, 거래 내역은 당시 체결 단위입니다.</div></>}
       </section>
