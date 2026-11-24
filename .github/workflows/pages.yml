@@ -1,6 +1,8 @@
 name: Publish backtest data and site
 
 on:
+  push:
+    branches: [master]
   schedule:
     - cron: '17 0 * * *'
   workflow_dispatch:
