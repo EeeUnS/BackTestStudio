@@ -1,0 +1,68 @@
+name: Publish backtest data and site
+
+on:
+  schedule:
+    - cron: '17 0 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: backtest-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    if: github.ref_name == github.event.repository.default_branch && vars.BACKTEST_PAGES_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/configure-pages@v5
+        id: pages
+      - name: Restore last validated data
+        shell: bash
+        run: |
+          set -euo pipefail
+          state="$RUNNER_TEMP/backtest-data"
+          if git ls-remote --exit-code --heads origin refs/heads/backtest-data; then
+            git fetch origin refs/heads/backtest-data
+            git worktree add --detach "$state" FETCH_HEAD
+          else
+            status=$?
+            if [ "$status" -ne 2 ]; then exit "$status"; fi
+            git worktree add --detach "$state" HEAD
+            git -C "$state" switch --orphan backtest-data
+          fi
+          mkdir -p "$state/cache"
+      - run: npm ci
+      - run: npm test
+      - name: Build and validate static data
+        shell: bash
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          set -euo pipefail
+          npm run build -- --mode pages --base "${BASE_PATH%/}/"
+          node server/exportPages.ts refresh "$RUNNER_TEMP/backtest-data/cache"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - uses: actions/deploy-pages@v4
+      - name: Save last validated data
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/backtest-data"
+          git add --force cache
+          if ! git diff --cached --quiet; then
+            git -c user.name=github-actions -c user.email=41898282+github-actions[bot]@users.noreply.github.com commit -m "Update backtest data"
+            git push origin HEAD:refs/heads/backtest-data
+          fi

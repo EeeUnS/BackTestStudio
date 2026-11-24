@@ -1,0 +1,126 @@
+/* Phase 2 account, tax and withdrawal surfaces follow the reviewed phase2 preview. */
+.phase2-settings { min-width:0; }
+.phase2-settings h2 { margin-top:28px; }
+.phase-account-fieldset { border:0; padding:0; margin:16px 0; min-width:0; }
+.phase-account-fieldset legend { font-size:12px; font-weight:600; margin-bottom:9px; }
+.phase-account-options { display:grid; gap:8px; }
+.phase-account-option { position:relative; display:flex; align-items:flex-start; gap:9px; padding:11px 12px; border:1px solid #d4deeb; border-radius:6px; cursor:pointer; background:white; min-width:0; }
+.phase-account-option input { margin:3px 0 0; width:15px; height:15px; min-height:15px; padding:0; accent-color:#344cc1; flex:0 0 auto; }
+.phase-account-option>span { min-width:0; }
+.phase-account-option strong { display:block; font-size:12px; line-height:1.6; }
+.phase-account-option small { display:block; font-size:10px; line-height:1.8; margin-top:4px; color:#52677b; }
+.phase-account-option[data-selected=true] { background:#eef2ff; border-color:#697fce; box-shadow:inset 3px 0 #344cc1; }
+.phase-account-option[data-disabled=true] { color:#64768a; background:#f3f5f8; cursor:not-allowed; }
+.phase-account-option:focus-within { outline:3px solid #956000; outline-offset:2px; }
+.phase-settings-foot { font-size:10px; line-height:1.8; color:#52677b; margin:14px 0 0; }
+.phase-note { font-size:11px; line-height:1.9; padding:10px 12px; background:#f4f7fc; border-left:3px solid #a6b7d3; color:#4e657d; margin:12px 0; overflow-wrap:anywhere; }
+.phase-inline-error { font-size:12px; line-height:1.8; color:#a33449; background:#fff6f7; padding:9px 12px; border-radius:5px; }
+.phase-inline-error:empty { display:none; }
+.phase-section-nav { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 16px; }
+.phase-section-nav a { font-size:12px; padding:8px 12px; color:#344a6b; border:1px solid #d6dfec; background:white; border-radius:6px; text-decoration:none; min-height:36px; }
+.phase-section-nav a:first-child { color:#344cc1; background:#edf1ff; border-color:#c4cfee; }
+.phase-warning { border:1px solid #ead2a3; background:#fffaf0; color:#78541f; padding:12px 15px; font-size:12px; line-height:1.8; border-radius:6px; margin-bottom:16px; }
+.phase-warning strong,.phase-warning>span { display:block; }
+.phase-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); background:white; border:1px solid #d7e1ee; border-radius:8px; margin-bottom:20px; overflow:hidden; }
+.phase-summary>div { padding:16px 18px; border-right:1px solid #e3e9f2; min-width:0; }
+.phase-summary>div:last-child { border:0; }
+.phase-summary span { display:block; font-size:11px; color:#52677b; }
+.phase-summary strong { display:block; font-size:19px; margin:8px 0; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+.phase-summary small { display:block; font-size:11px; color:#52677b; line-height:1.8; }
+.phase-pill { display:inline-block; padding:4px 7px; border-radius:4px; font-size:10px; color:#72531b; background:#fff4d9; border:1px solid #ecdfbd; white-space:nowrap; }
+.phase-pill-unavailable { background:#fff1f3; border-color:#e9c7ce; color:#92384b; }
+.phase-results-grid { display:grid; grid-template-columns:minmax(0,1fr) 290px; gap:20px; align-items:start; }
+.phase-results-grid>* { min-width:0; }
+.phase-body { padding:20px 22px; min-width:0; }
+.phase-tabs { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:18px; }
+.phase-tabs button { font-size:12px; min-height:36px; }
+.phase-tabs button[aria-pressed=true] { background:#eef1ff; color:#3046a7; border-color:#8090d2; }
+.phase-empty { color:#52677b; font-size:12px; line-height:1.8; margin:10px 0; }
+.phase-tax-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:14px 0; }
+.phase-tax-cards>div { background:#f6f8fc; border:1px solid #e0e7f0; border-radius:6px; padding:14px; min-width:0; }
+.phase-tax-cards span { font-size:11px; color:#52677b; }
+.phase-tax-cards strong { font-size:21px; display:block; margin:9px 0 5px; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.phase-tax-cards small { font-size:11px; color:#52677b; line-height:1.8; display:block; }
+.phase-performance { display:grid; gap:9px; margin:14px 0; }
+.phase-performance>div { display:flex; gap:12px; flex-wrap:wrap; justify-content:space-between; font-size:12px; line-height:1.8; }
+.phase-performance dt { color:#52677b; }
+.phase-performance dd { font-weight:650; margin:0; overflow-wrap:anywhere; }
+.phase-table { border-collapse:collapse; width:100%; font-size:12px; white-space:nowrap; }
+.phase-table caption { text-align:left; padding:10px 14px; color:#52677b; font-size:11px; background:#fafbfd; }
+.phase-table th { font-size:11px; font-weight:500; background:#f6f8fb; color:#52677b; }
+.phase-table td,.phase-table th { padding:12px 14px; border-bottom:1px solid #e5ebf3; text-align:right; font-variant-numeric:tabular-nums; vertical-align:top; }
+.phase-table td:first-child,.phase-table th:first-child,.phase-table td:last-child,.phase-table th:last-child { text-align:left; }
+.phase-table td small { display:block; font-size:10px; color:#61758b; white-space:normal; line-height:1.8; margin-top:4px; }
+.phase-table td:last-child { white-space:normal; min-width:180px; line-height:1.8; }
+.phase-table button { font-size:11px; padding:5px 8px; min-height:32px; }
+.phase-table details { font-size:10px; line-height:1.8; }
+.phase-table details ul { padding-left:16px; white-space:normal; min-width:200px; }
+.phase-policy-details { padding:12px 20px; font-size:11px; line-height:1.9; border-top:1px solid #e5ebf3; }
+.phase-policy-details summary { cursor:pointer; min-height:36px; padding:6px 0; }
+.phase-policy-details p,.phase-policy-details li { overflow-wrap:anywhere; }
+.phase-policy-details ul { padding-left:18px; }
+.phase-version { font:10px/1.8 Consolas,monospace; overflow-wrap:anywhere; }
+.phase-timeline { list-style:none; margin:0; padding:0; }
+.phase-timeline li { position:relative; margin:0; padding:0 0 22px 25px; border-left:1px solid #cfdaeb; }
+.phase-timeline li:before { content:""; position:absolute; left:-5px; top:5px; width:9px; height:9px; border-radius:50%; background:#617fca; outline:4px solid white; }
+.phase-timeline li:last-child { border:0; padding-bottom:0; }
+.phase-timeline strong { display:block; font-size:12px; }
+.phase-timeline time { display:block; font-size:16px; margin:7px 0; font-variant-numeric:tabular-nums; }
+.phase-timeline small { font-size:11px; color:#52677b; line-height:1.8; }
+.phase-settlement-values { margin-top:18px; padding-top:8px; border-top:1px solid #e3e9f2; }
+.phase-settlement-values p,.phase-limit-row { display:flex; justify-content:space-between; gap:12px; font-size:12px; margin:10px 0; }
+.phase-settlement-values p>span,.phase-limit-row>span { color:#52677b; }
+.phase-settlement-values p>strong,.phase-limit-row>strong { text-align:right; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.phase-settlement-values p:last-child { border-top:1px solid #e3e9f2; padding-top:12px; }
+.phase-settlement-values p:last-child strong { color:#263c9a; font-size:16px; }
+.phase-contribution-summary { margin-top:24px; border-top:1px solid #e3e9f2; padding-top:16px; }
+.phase-contribution-summary h3 { font-size:13px; margin:0 0 16px; }
+.phase-contribution-summary>.phase-policy-details { padding:8px 0; border:0; }
+.phase-account-warnings { font-size:11px; line-height:1.9; color:#52677b; padding-left:17px; }
+.phase-withdraw-form { display:grid; grid-template-columns:minmax(130px,1fr) minmax(130px,1fr) auto auto; gap:12px; align-items:end; margin-bottom:16px; }
+.phase-withdraw-form .field { margin:0; min-width:0; }
+.phase-withdraw-form label { font-size:12px; }
+.phase-withdraw-form>button { min-height:43px; }
+.phase-withdraw-summary { display:flex; flex-wrap:wrap; gap:16px; color:#52677b; font-size:12px; }
+.phase-row-actions { display:flex; gap:6px; }
+.phase-withdraw-totals { display:flex; flex-wrap:wrap; gap:12px 24px; font-size:12px; line-height:1.8; color:#52677b; }
+.phase-withdraw-totals strong { color:#243b61; margin-left:6px; font-variant-numeric:tabular-nums; }
+.phase2-withdraw-log>.panel-head>select { width:auto; max-width:180px; }
+.phase-log-note { margin:12px 22px 20px; }
+.phase2-withdrawals [data-included=false] { color:#6a7c8c; }
+.phase-tax-chart { border-top:1px solid #e5ebf3; margin-top:18px; padding-top:14px; }
+.phase-chart-legend { display:flex; align-items:center; flex-wrap:wrap; gap:12px; font-size:11px; color:#52677b; }
+.phase-chart-legend i { display:inline-block; width:18px; border-top:2px solid; margin-right:5px; vertical-align:middle; }
+.phase-chart-legend .phase-key-account { border-color:#344cc1; }
+.phase-tax-chart svg { width:100%; height:195px; display:block; margin-top:10px; touch-action:pan-y; }
+.phase-chart-dates { display:flex; justify-content:space-between; color:#61758b; font-size:10px; }
+.phase-chart-quote { display:flex; flex-wrap:wrap; gap:8px 14px; font-size:11px; line-height:1.8; color:#52677b; }
+@media(max-width:1280px) { .phase-results-grid { grid-template-columns:minmax(0,1fr) 270px; } .phase-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } .phase-summary>div:nth-child(2) { border-right:0; } .phase-summary>div:nth-child(-n+2) { border-bottom:1px solid #e3e9f2; } }
+@media(max-width:1050px) { .phase-results-grid { grid-template-columns:1fr; gap:0; } .phase-settlement .phase-body { display:grid; grid-template-columns:1fr 1fr; gap:20px; } .phase-settlement .phase-contribution-summary { margin:0; padding:0; border:0; } .phase-settlement-values { margin-top:0; } }
+@media(max-width:700px) {
+  .phase2-settings { grid-column:1/-1; }
+  .phase2-settings>h2,.phase2-settings>.check,.phase2-settings>.phase-note,.phase2-settings>.phase-settings-foot,.phase2-settings>.phase-inline-error,.phase-account-fieldset { grid-column:1/-1; }
+  .phase-account-option { min-height:60px; } .phase-account-option strong { font-size:13px; } .phase-account-option small { font-size:11px; }
+  .phase-section-nav { margin-top:12px; } .phase-section-nav a { font-size:11px; padding:8px 9px; }
+  .phase-warning { font-size:11px; padding:11px 13px; }
+  .phase-summary>div { padding:14px 12px; } .phase-summary strong { font-size:17px; } .phase-summary span,.phase-summary small { font-size:10px; }
+  .phase-body { padding:16px 14px; } .phase-tax-cards { gap:8px; grid-template-columns:1fr; } .phase-tax-cards>div { padding:12px; }
+  .phase-tax-cards strong { font-size:20px; } .phase-performance>div { flex-direction:column; gap:2px; }
+  .phase-withdraw-form { grid-template-columns:1fr 1fr; gap:12px; } .phase-withdraw-form>button { width:100%; }
+  .phase-withdraw-summary { gap:8px 14px; font-size:11px; } .phase-log-note { margin:10px 14px 16px; }
+  .phase-policy-details { padding:12px 14px; } .phase-settlement .phase-body { display:block; } .phase-settlement .phase-contribution-summary { margin-top:22px; padding-top:16px; border-top:1px solid #e3e9f2; }
+  .phase-settlement-values { margin-top:18px; } .phase-withdraw-totals { font-size:11px; gap:8px 14px; }
+  .phase2-withdraw-log>.panel-head>select { max-width:145px; } .phase-pill { font-size:9px; }
+}
+/* Additional live data controls in the sidebar. */
+.phase-data-controls { display:flex;flex-direction:column;gap:9px;font-size:11px;margin-top:12px; }
+.phase-data-controls button { font-size:11px; }
+.phase-data-controls a { color:var(--blue); }
+.phase-chart-event-key { margin:0;padding:8px 22px;color:var(--muted);font-size:11px;line-height:1.8; }
+.phase-withdrawal-summary { display:flex;flex-wrap:wrap;gap:10px 22px;border:1px solid var(--line);background:white;border-radius:8px;padding:14px 20px;margin-bottom:16px;font-size:12px; }
+.phase-withdrawal-summary span { color:var(--muted); }.phase-withdrawal-summary strong { display:block;color:var(--ink);margin-top:5px;font-variant-numeric:tabular-nums; }.phase-withdrawal-summary small { width:100%;color:var(--muted);line-height:1.7; }
+
+.section-disclosure > summary { cursor: pointer; padding: 14px 16px; min-height: 44px; box-sizing: border-box; font-weight: 700; color: #263e55; }
+.section-disclosure > summary:focus-visible { outline: 2px solid #225ab6; outline-offset: -3px; }
+.section-disclosure[open] > summary { border-bottom: 1px solid #e3e9f0; }
+.section-disclosure-body { min-width: 0; }

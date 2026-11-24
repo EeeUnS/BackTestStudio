@@ -1,0 +1,412 @@
+:root {
+  font-family:"Segoe UI","Malgun Gothic",sans-serif;
+  color:#182b3c;
+  background:#f4f6f9;
+  font-synthesis:none;
+  --line:#d7e1ed;
+  --muted:#52677b;
+  --blue:#344cc1}
+  * {
+    box-sizing:border-box}
+    body {
+      margin:0}
+      button,input,select {
+        font:inherit}
+        button,input,select {
+          min-height:44px;
+          border:1px solid #cbd7e6;
+          border-radius:6px;
+          background:white;
+          color:inherit;
+          padding:9px 11px}
+          button {
+            cursor:pointer}
+            button:hover {
+              background:#edf1fd}
+              button:disabled {
+                cursor:default;
+                color:#64748b;
+                background:#edf0f5}
+                button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible {
+                  outline:3px solid #c27c10;
+                  outline-offset:3px}
+                  .shell {
+                    display:grid;
+                    grid-template-columns:276px minmax(0,1fr);
+                    min-height:100vh}
+                    .sidebar {
+                      padding:30px 24px;
+                      background:white;
+                      border-right:1px solid var(--line);
+                      height:100vh;
+                      position:sticky;
+                      top:0;
+                      overflow-y:auto}
+                      .brand {
+                        font-size:21px;
+                        font-weight:750;
+                        color:#203b74}
+                        .brand span {
+                          font-weight:400;
+                          color:var(--muted)}
+                          h2 {
+                            font-size:15px;
+                            margin:0}
+                            .sidebar h2 {
+                              display:flex;
+                              align-items:center;
+                              gap:9px;
+                              margin:30px 0 18px}
+                              .sidebar h2 b {
+                                font-size:12px;
+                                border:1px solid var(--line);
+                                border-radius:50%;
+                                height:24px;
+                                width:24px;
+                                display:grid;
+                                place-items:center}
+                                .field {
+                                  display:grid;
+                                  gap:9px;
+                                  font-size:13px;
+                                  margin:18px 0}
+                                  .field input,.field select {
+                                    width:100%;
+                                    min-width:0}
+                                    .instrument {
+                                      padding:12px;
+                                      background:#f5f8fd;
+                                      border:1px solid #e1e9f4;
+                                      border-radius:6px;
+                                      display:flex;
+                                      gap:12px;
+                                      align-items:center;
+                                      font-size:12px;
+                                      line-height:1.7;
+                                      margin-bottom:20px;
+                                      overflow-wrap:anywhere}
+                                      .instrument strong {
+                                        color:#2458b3}
+                                        .instrument small {
+                                          display:block;
+                                          color:var(--muted)}
+                                          .check {
+                                            display:flex;
+                                            align-items:center;
+                                            gap:9px;
+                                            font-size:13px;
+                                            min-height:44px}
+                                            .check input {
+                                              width:18px;
+                                              min-height:18px;
+                                              accent-color:var(--blue)}
+                                              .hint {
+                                                font-size:12px;
+                                                line-height:1.8;
+                                                color:var(--muted)}
+                                                .run {
+                                                  width:100%;
+                                                  margin-top:24px;
+                                                  background:var(--blue);
+                                                  color:white;
+                                                  font-weight:700}
+                                                  main {
+                                                    min-width:0;
+                                                    width:100%;
+                                                    max-width:1700px;
+                                                    padding:0 32px 32px;
+                                                    margin:auto}
+                                                    .topbar {
+                                                      height:76px;
+                                                      border-bottom:1px solid var(--line);
+                                                      display:flex;
+                                                      align-items:center;
+                                                      justify-content:space-between;
+                                                      gap:15px;
+                                                      font-size:13px;
+                                                      color:var(--muted)}
+                                                      .badge {
+                                                        font-size:11px;
+                                                        padding:7px 10px;
+                                                        background:#e8edfc;
+                                                        color:#3447a3;
+                                                        border-radius:5px}
+                                                        .heading {
+                                                          margin:28px 0 20px}
+                                                          .heading h1 {
+                                                            font-size:28px;
+                                                            letter-spacing:-1px;
+                                                            margin:0 0 10px}
+                                                            .heading p {
+                                                              font-size:13px;
+                                                              color:var(--muted);
+                                                              line-height:1.7}
+                                                              .notice {
+                                                                padding:13px 16px;
+                                                                font-size:12px;
+                                                                line-height:1.8;
+                                                                background:#fffdf7;
+                                                                border:1px solid #e5dabb;
+                                                                color:#70521d;
+                                                                border-radius:6px;
+                                                                margin-bottom:20px}
+                                                                .metrics {
+                                                                  display:grid;
+                                                                  grid-template-columns:1.35fr 1fr 1fr 1fr;
+                                                                  background:white;
+                                                                  border:1px solid var(--line);
+                                                                  border-radius:9px;
+                                                                  overflow:hidden;
+                                                                  margin-bottom:20px}
+                                                                  .metric {
+                                                                    padding:22px 24px;
+                                                                    border-right:1px solid var(--line);
+                                                                    min-width:0}
+                                                                    .metric:first-child {
+                                                                      background:#f8faff}
+                                                                      .metric:last-child {
+                                                                        border:0}
+                                                                        .metric span,.metric small {
+                                                                          font-size:12px;
+                                                                          color:var(--muted)}
+                                                                          .metric strong {
+                                                                            display:block;
+                                                                            font-size:34px;
+                                                                            margin:12px 0}
+                                                                            .panel {
+                                                                              background:white;
+                                                                              border:1px solid var(--line);
+                                                                              border-radius:9px;
+                                                                              margin-bottom:20px;
+                                                                              overflow:hidden}
+                                                                              .panel-head {
+                                                                                padding:16px 22px;
+                                                                                border-bottom:1px solid #e5ebf2;
+                                                                                display:flex;
+                                                                                align-items:center;
+                                                                                justify-content:space-between;
+                                                                                gap:12px;
+                                                                                min-height:64px}
+                                                                                .panel-head button {
+                                                                                  font-size:12px}
+                                                                                  .chart-toolbar {
+                                                                                    padding:20px 22px;
+                                                                                    display:flex;
+                                                                                    align-items:center;
+                                                                                    justify-content:space-between;
+                                                                                    gap:12px;
+                                                                                    flex-wrap:wrap}
+                                                                                    .chart-toolbar strong {
+                                                                                      font-size:23px}
+                                                                                      .chart-toolbar small {
+                                                                                        display:block;
+                                                                                        margin-top:5px;
+                                                                                        color:var(--muted);
+                                                                                        font-size:12px}
+                                                                                        .price-chart {
+                                                                                          height:390px;
+                                                                                          width:100%}
+                                                                                          .chart-meta {
+                                                                                            font-size:11px;
+                                                                                            line-height:1.8;
+                                                                                            color:var(--muted);
+                                                                                            padding:12px 22px}
+                                                                                            .empty {
+                                                                                              min-height:190px;
+                                                                                              padding:45px 22px;
+                                                                                              display:grid;
+                                                                                              align-content:center;
+                                                                                              text-align:center;
+                                                                                              color:var(--muted);
+                                                                                              font-size:13px;
+                                                                                              line-height:1.9}
+                                                                                              .error {
+                                                                                                color:#a12b3a}
+                                                                                                .lower-grid {
+                                                                                                  display:grid;
+                                                                                                  grid-template-columns:minmax(0,1fr) 300px;
+                                                                                                  gap:20px}
+                                                                                                  .account {
+                                                                                                    padding:14px 22px}
+                                                                                                    .account p {
+                                                                                                      display:flex;
+                                                                                                      justify-content:space-between;
+                                                                                                      font-size:12px;
+                                                                                                      margin:15px 0;
+                                                                                                      color:var(--muted)}
+                                                                                                      .data-notes {
+                                                                                                        padding:18px 22px;
+                                                                                                        font-size:12px;
+                                                                                                        color:var(--muted);
+                                                                                                        line-height:1.9}
+                                                                                                        .data-notes summary {
+                                                                                                          cursor:pointer;
+                                                                                                          min-height:32px}
+                                                                                                          .data-notes li {
+                                                                                                            margin:8px 0}
+                                                                                                            footer {
+                                                                                                              color:var(--muted);
+                                                                                                              font-size:11px;
+                                                                                                              line-height:1.9}
+                                                                                                              a {
+                                                                                                                color:#344cc1}
+                                                                                                                @media(max-width:1280px) {
+                                                                                                                  .shell {
+                                                                                                                    grid-template-columns:244px minmax(0,1fr)}
+                                                                                                                    .sidebar {
+                                                                                                                      padding:26px 18px}
+                                                                                                                      main {
+                                                                                                                        padding:0 20px 24px}
+                                                                                                                        .metrics {
+                                                                                                                          grid-template-columns:1fr 1fr}
+                                                                                                                          .metric:nth-child(2) {
+                                                                                                                            border-right:0}
+                                                                                                                            .metric:nth-child(-n+2) {
+                                                                                                                              border-bottom:1px solid var(--line)}
+                                                                                                                            }
+                                                                                                                            @media(max-width:1050px) {
+                                                                                                                              .lower-grid {
+                                                                                                                                grid-template-columns:1fr}
+                                                                                                                                .heading h1 {
+                                                                                                                                  font-size:25px}
+                                                                                                                                }
+                                                                                                                                @media(max-width:700px) {
+                                                                                                                                  .shell {
+                                                                                                                                    display:flex;
+                                                                                                                                    flex-direction:column}
+                                                                                                                                    .sidebar {
+                                                                                                                                      height:auto;
+                                                                                                                                      position:static;
+                                                                                                                                      border-right:0;
+                                                                                                                                      border-bottom:1px solid var(--line);
+                                                                                                                                      padding:20px}
+                                                                                                                                      .sidebar h2 {
+                                                                                                                                        margin:18px 0}
+                                                                                                                                        .brand {
+                                                                                                                                          font-size:20px}
+                                                                                                                                          main {
+                                                                                                                                            padding:0 12px 24px}
+                                                                                                                                            .heading h1 {
+                                                                                                                                              font-size:23px}
+                                                                                                                                              .topbar {
+                                                                                                                                                height:66px}
+                                                                                                                                                .topbar>span:first-child {
+                                                                                                                                                  font-size:12px}
+                                                                                                                                                  .badge {
+                                                                                                                                                    font-size:10px}
+                                                                                                                                                    .metric {
+                                                                                                                                                      padding:16px 14px}
+                                                                                                                                                      .metric strong {
+                                                                                                                                                        font-size:28px}
+                                                                                                                                                        .chart-toolbar {
+                                                                                                                                                          padding:16px 14px}
+                                                                                                                                                          .panel-head {
+                                                                                                                                                            padding:14px}
+                                                                                                                                                            .price-chart {
+                                                                                                                                                              height:340px}
+                                                                                                                                                              .chart-meta {
+                                                                                                                                                                padding:12px 14px}
+                                                                                                                                                                .heading p {
+                                                                                                                                                                  font-size:12px}
+                                                                                                                                                                  .notice {
+                                                                                                                                                                    font-size:11px}
+                                                                                                                                                                  }
+                                                                                                                                                                  @media(prefers-reduced-motion:reduce) {
+                                                                                                                                                                    * {
+                                                                                                                                                                      scroll-behavior:auto!important;
+                                                                                                                                                                      transition:none!important}
+                                                                                                                                                                    }
+.calculation-status { padding:12px 16px; border:1px solid #d5dfec; background:#eaf0f8; border-radius:6px; margin-bottom:18px; color:#354e6a; font-size:12px; line-height:1.8; }
+.performance-details { display:flex; gap:12px 24px; flex-wrap:wrap; margin:-4px 0 20px; color:var(--muted); font-size:12px; line-height:1.8; }
+.metric strong { font-size:clamp(19px,2vw,30px); overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+.metric:first-child strong { font-size:clamp(21px,2.2vw,34px); }
+.period-controls { padding:16px 22px; border-top:1px solid var(--line); display:grid; gap:14px; }
+.quick-periods { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.quick-periods button { font-size:12px; }
+.quick-periods small { color:var(--muted); font-size:11px; line-height:1.8; }
+.date-fields,.range-fields { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.date-fields label,.range-fields label { display:grid; gap:7px; font-size:12px; min-width:0; }
+.date-fields input,.range-fields input { min-width:0; width:100%; }
+.range-fields input { padding:0; accent-color:var(--blue); }
+.asset-chart { height:240px; min-width:0; }
+.table-scroll { overflow:auto; }
+.trades { border-collapse:collapse; width:100%; font-size:12px; white-space:nowrap; }
+.trades th,.trades td { text-align:right; padding:12px 16px; border-bottom:1px solid #edf0f5; font-variant-numeric:tabular-nums; }
+.trades th { background:#fafbfc; color:var(--muted); font-weight:500; }
+.trades th:first-child,.trades td:first-child,.trades th:last-child,.trades td:last-child { text-align:left; }
+.trades tr:hover { background:#f4f7ff; }
+.trade-tag { font-size:11px; border:1px solid #d9e5fc; background:#edf3ff; color:#225ab6; border-radius:4px; padding:3px 7px; }
+.table-bottom { display:flex; align-items:center; gap:8px; padding:12px 16px; font-size:12px; color:var(--muted); }
+.table-bottom span { margin-right:auto; }
+.account strong, .comparison-body strong { font-variant-numeric:tabular-nums; overflow-wrap:anywhere; text-align:right; }
+.comparison-body { padding:14px 22px; }
+.comparison-body p:not(.hint) { display:flex; justify-content:space-between; gap:12px; font-size:12px; margin:15px 0; color:var(--muted); }
+@media(max-width:700px) { .period-controls{padding:14px}.date-fields,.range-fields{gap:10px}.metric strong{font-size:21px}.metric:first-child strong{font-size:23px}.performance-details{font-size:11px}.account p{gap:12px} }
+.chart-options,.chart-quote { display:flex; align-items:center; flex-wrap:wrap; gap:10px 16px; padding:10px 22px; }
+.chart-quote { min-height:58px; color:var(--muted); font-size:11px; line-height:1.7; }
+.chart-quote strong { color:#203b74; }
+.timeframe-buttons { display:flex; gap:5px; }
+.timeframe-buttons button { min-width:48px; font-size:12px; }
+.timeframe-buttons button[aria-pressed=true] { background:#edf0fe; color:#283eaa; border-color:#8799dc; }
+.moving-average-settings,.candle-trades { padding:14px 22px; border-top:1px solid var(--line); font-size:12px; line-height:1.8; }
+.moving-average-settings summary { cursor:pointer; min-height:32px; }
+.moving-average-settings>div { display:flex; flex-wrap:wrap; gap:12px; padding:12px 0; }
+.moving-average-settings fieldset { border:1px solid var(--line); padding:10px; display:flex; flex-wrap:wrap; align-items:center; gap:10px; min-width:0; }
+.moving-average-settings label { display:flex; align-items:center; gap:7px; }
+.moving-average-settings input[type=number] { width:76px; }
+.moving-average-settings input[type=checkbox] { min-height:18px; width:18px; accent-color:var(--blue); }
+.moving-average-settings input[type=color] { width:44px; padding:4px; }
+.moving-average-settings small,.candle-trades small { color:var(--muted); display:block; }
+.candle-trades label { display:grid; gap:8px; }
+.candle-trades select { width:100%; min-width:0; }
+.candle-trades ul { padding-left:0; list-style:none; }
+.candle-trades li button { width:100%; text-align:left; line-height:1.8; margin:4px 0; }
+.history-explorer { padding:16px 24px; border-top:1px solid var(--line); }
+.history-caption { display:flex; align-items:center; flex-wrap:wrap; gap:8px 16px; justify-content:space-between; font-size:12px; color:var(--muted); }
+.history-navigator { position:relative; height:110px; margin:10px 22px; touch-action:none; }
+.history-navigator svg { width:100%; height:100%; display:block; }
+.history-selection { position:absolute; top:0; bottom:0; border:1px solid #8799dc; background:#344cc11c; cursor:grab; min-width:1px; }
+.history-handle { position:absolute; top:0; bottom:0; width:44px; padding:0; transform:translateX(-50%); background:transparent; border:0; border-radius:0; color:#283eaa; cursor:ew-resize; }
+.history-handle span { background:#edf0fe; border:1px solid #8799dc; border-radius:4px; padding:8px 3px; }
+.history-explorer>small { color:var(--muted); font-size:11px; line-height:1.8; display:block; }
+@media(max-width:700px) { .chart-options,.chart-quote{padding:10px 14px;gap:7px 10px}.history-explorer{padding:14px}.moving-average-settings,.candle-trades{padding:14px}.moving-average-settings fieldset{width:100%}.chart-options .hint{margin:0}.history-caption{font-size:11px} }
+.strategy-details { margin:16px 0; border-top:1px solid var(--line); padding-top:12px; font-size:12px; line-height:1.8; }
+.strategy-details summary { cursor:pointer; min-height:36px; }
+.krw-metrics { border-left:0; border-right:0; border-radius:0; margin-bottom:14px; }
+.krw-details { padding:0 20px; }
+.krw-account { padding:16px 22px; display:grid; gap:9px; color:var(--muted); font-size:12px; line-height:1.8; border-top:1px solid var(--line); }
+.krw-account strong { color:#203b74; }
+.krw-report .data-notes { border-top:1px solid var(--line); }
+
+.price-range-chart { position:relative; }
+.price-range-handle { position:absolute; top:0; width:44px; height:44px; padding:0; transform:translateX(-50%); z-index:2; background:#edf0fe; border:1px solid #8799dc; color:#283eaa; touch-action:none; cursor:ew-resize; font-size:12px; }
+.price-range-handle i { position:absolute; top:43px; left:21px; height:305px; width:1px; background:#8799dc; pointer-events:none; }
+.price-range-handle:focus-visible { outline:3px solid #225ab6; outline-offset:2px; }
+
+.price-range-handle[data-overlap="true"] { top:48px; }
+.price-range-handle[data-overlap="true"] i { height:257px; }
+
+.profit-legend { display:flex; flex-direction:column; gap:8px; margin:12px 0; font-size:13px; color:#52677b; }
+.profit-legend small { line-height:1.7; }
+.chart-workspace { position:relative; padding-top:56px; }
+.chart-workspace .moving-average-settings { position:absolute; top:6px; right:12px; z-index:5; padding:0; border:1px solid var(--line); border-radius:6px; background:#fff; max-width:calc(100% - 24px); }
+.chart-workspace .moving-average-settings summary { padding:10px 14px; min-height:44px; box-sizing:border-box; }
+.chart-workspace .moving-average-settings summary:focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
+.chart-workspace .moving-average-settings[open] { width:360px; box-shadow:0 8px 28px #192b4026; }
+.chart-workspace .moving-average-settings > div { max-height:270px; overflow:auto; padding:8px 12px; }
+.chart-workspace .moving-average-settings fieldset { width:100%; box-sizing:border-box; }
+.chart-workspace .moving-average-settings > small { padding:0 12px 12px; }
+.zone-legend { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
+.zone-profit,.zone-loss { display:inline-block; width:18px; height:10px; border:1px solid #147d62; background:#147d622b; }
+.zone-loss { border-color:#bc4157; background:#bc41572b; }
+/* Keep the completed layout while pending values are visually replaced. */
+#workspace[data-calculating=true] :is(.metric > strong, .metric > small, .performance-details > span, .performance-details > strong, .cost-loss-heading > strong, .cost-loss-heading > small, .cost-loss-detail strong, .cost-loss-detail small, .loss-date, .account p > strong, .account-date, .asset-composition > span, .profit-legend > span, .phase-limit-row strong, .phase-withdraw-summary strong, .phase-summary strong, .phase-tax-cards strong, .phase-performance dd, .phase-settlement-values strong, .phase-withdraw-totals strong, .phase-withdrawal-summary strong, .comparison-body strong, .krw-account > span, .krw-account > strong, .phase-table tbody td, .trades tbody td) {
+  position:relative; visibility:hidden;
+}
+#workspace[data-calculating=true] :is(.metric > strong, .metric > small, .performance-details > span, .performance-details > strong, .cost-loss-heading > strong, .cost-loss-heading > small, .cost-loss-detail strong, .cost-loss-detail small, .loss-date, .account p > strong, .account-date, .asset-composition > span, .profit-legend > span, .phase-limit-row strong, .phase-withdraw-summary strong, .phase-summary strong, .phase-tax-cards strong, .phase-performance dd, .phase-settlement-values strong, .phase-withdraw-totals strong, .phase-withdrawal-summary strong, .comparison-body strong, .krw-account > span, .krw-account > strong, .phase-table tbody td, .trades tbody td)::after {
+  content:'—'; position:absolute; left:0; top:0; visibility:visible; color:var(--muted);
+}
+
+.estimate-chart-key { color:#875713; background:#fff8e8; padding:8px 12px; font-size:12px; line-height:1.6; }
+.model-summary { padding:16px 20px; font-size:13px; line-height:1.7; overflow-wrap:anywhere; }
+.model-version { font-family:monospace; font-size:11px; overflow-wrap:anywhere; }

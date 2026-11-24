@@ -1,0 +1,20 @@
+node_modules/
+dist/
+cache/
+work/
+*.log
+
+# Local planning, documentation and UI prototypes
+/*.html
+!/index.html
+/docs/
+/phase2-preview.js
+/src/holdingPreview.tsx
+/src/holding-preview.css
+/tests/ui-browser-qa.html
+/tests/preview-harness.cjs
+/tests/serve-ui-qa.cjs
+/tests/run-browser-qa.cjs
+/tests/ui-period-selection.test.cjs
+/tests/ui-phase2.test.cjs
+/작업계획.md
