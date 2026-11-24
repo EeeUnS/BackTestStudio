@@ -65,6 +65,11 @@ test('공급원 파서: 현지 거래일, 미완성 당일 제외, 결측 경고
   Object.assign(result.meta, { currentTradingPeriod: { regular: { end: Date.parse('2026-01-05T21:00:00Z') / 1000 } } });
   assert.equal(parseYahoo(payload, 'TQQQ', new Date('2026-01-05T20:59:59Z')).bars.length, 1);
   assert.equal(parseYahoo(payload, 'TQQQ', new Date('2026-01-05T21:00:00Z')).bars.at(-1)?.date, '2026-01-05');
+  result.indicators.quote[0].close[1] = 0;
+  const incomplete = parseYahoo(payload, 'TQQQ', new Date('2026-01-06T05:00:00Z'));
+  assert.equal(incomplete.bars.at(-1)?.date, '2026-01-02');
+  assert(incomplete.warnings.some(item => item.startsWith('2026-01-05:')));
+  result.indicators.quote[0].close[1] = 106;
   result.meta.symbol = 'QLD';
   assert.throws(() => parseYahoo(payload, 'TQQQ', new Date('2026-01-05T23:00:00Z')), /종목 코드/);
   result.meta.symbol = 'TQQQ';

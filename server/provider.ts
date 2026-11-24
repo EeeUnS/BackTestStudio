@@ -48,6 +48,11 @@ export function parseYahoo(payload: unknown, symbol: string, now = new Date(), s
       warnings.push(`${date}: OHLC 미제공 행. 거래일 여부 확인 필요, 가격을 생성하지 않았습니다.`);
       continue;
     }
+    const latestRow = i === result.timestamp.length - 1;
+    if (latestRow && [open, high, low, close].some(value => typeof value !== 'number' || !Number.isFinite(value) || value <= 0)) {
+      warnings.push(`${date}: 최신 일봉의 OHLC가 불완전해 다음 갱신까지 제외합니다.`);
+      continue;
+    }
     const bar: PriceBar = { date, open: positive(open, date), high: positive(high, date), low: positive(low, date), close: positive(close, date) };
     if (instrument.symbol === 'QQQ5.L' && bar.high >= bar.low) {
       const high = Math.max(bar.high, bar.open, bar.close);
