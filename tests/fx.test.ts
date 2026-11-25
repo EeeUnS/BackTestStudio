@@ -94,12 +94,19 @@ test('환율 파일 캐시도 무결성·조회 실패 보존·동일 요청 합
   const directory = await mkdtemp(join(tmpdir(), 'backtest-fx-'));
   let calls = 0;
   try {
-    const store = createFxStore(directory, async () => { calls++; return fx(); });
-    await Promise.all([store.get('USD-KRW', true), store.get('USD-KRW', true)]);
+    const expired = createFxStore(directory, async () => fx());
+    await expired.get('USD-KRW', true);
+    const failure = createFxStore(directory, async () => { throw new Error('HTTP 503'); });
+    assert.equal((await failure.get('USD-KRW')).stale, true);
+    const store = createFxStore(directory, async () => {
+      calls++;
+      return { ...fx(), fetchedAt: new Date().toISOString() };
+    });
+    const results = await Promise.all([store.get('USD-KRW'), store.get('USD-KRW')]);
+    assert.ok(results.every(result => result.cache === 'fresh'));
     assert.equal(calls, 1);
     assert.equal((await store.get('USD-KRW')).cache, 'cached');
     const before = await readFile(join(directory, 'USD-KRW.json'), 'utf8');
-    const failure = createFxStore(directory, async () => { throw new Error('HTTP 503'); });
     await assert.rejects(failure.get('USD-KRW', true), /503/);
     assert.equal(await readFile(join(directory, 'USD-KRW.json'), 'utf8'), before);
     await writeFile(join(directory, 'USD-KRW.json'), '{"hash":"bad","payload":"{}"}');

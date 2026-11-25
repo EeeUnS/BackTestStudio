@@ -26,7 +26,7 @@ export function Phase2Report({report,accountReport,account:selectedAccount,enabl
   const noSettlementNote=account!=='general'?'정산 자료와 결제 가능일을 확인하세요.':currentScenario==='liquidate'?'종료 보유분의 가상 매도와 세금을 별도로 계산했습니다. 원래 전략 원장은 바꾸지 않으며, 결제·납부일은 연도별 원장에서 확인하세요.':'보유 유지 결과입니다. 종료일 주식을 강제 매도하지 않습니다.';
   const reason=!enabled?'매매차익 세금 반영을 켜면 세금·정산 결과를 표시합니다.':error??report?.reason??(loading?'계좌·세금 결과를 계산하고 있습니다…':'백테스트 실행 후 세금·정산 결과를 표시합니다.');
   return <section className="phase2-report" aria-label="계좌·세금 정산 결과" aria-busy={loading}>
-    <details className="section-disclosure" open><summary>계좌 · 세금 정산 결과</summary><div className="section-disclosure-body">
+    <details className="section-disclosure" open={!(ready && report.accrued === 0)}><summary>계좌 · 세금 정산 결과</summary><div className="section-disclosure-body">
     <nav className="phase-section-nav" aria-label="계좌 분석 항목"><a href="#phase2-tax-panel">계좌 · 세금 정산</a><a href="#withdrawals-panel">중간 인출 일정</a><a href="#phase2-withdraw-log">인출 실행 내역</a></nav>
     <div className="phase-warning"><strong>매매차익 과세 반영 · 분배금 과세 미반영 · 현재 규칙 고정 시뮬레이션</strong><span>현재 제도를 과거 전체 기간에 동일 적용하는 제한 모형입니다. 실제 신고서나 모든 세금이 반영된 실수령액이 아닙니다.</span></div>
     <div className="phase-summary">
