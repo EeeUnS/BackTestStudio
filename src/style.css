@@ -407,5 +407,7 @@
 }
 
 .estimate-chart-key { color:#875713; background:#fff8e8; padding:8px 12px; font-size:12px; line-height:1.6; }
+.data-options { margin-top:12px; }
+.data-options .hint { margin:0 0 8px; }
 .model-summary { padding:16px 20px; font-size:13px; line-height:1.7; overflow-wrap:anywhere; }
 .model-version { font-family:monospace; font-size:11px; overflow-wrap:anywhere; }

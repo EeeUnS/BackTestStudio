@@ -268,11 +268,6 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
         {instruments.map(item => <option key={item.symbol} value={item.symbol}>{item.currency === 'KRW' ? item.name : item.symbol}</option>)}
       </select></label>
       <div className="instrument"><strong className="ticker">{symbol === '418660.KS' ? 'TG' : symbol.slice(0,2)}</strong><span><strong>{instrument.name}</strong><small>일간 {instrument.leverage}배 · {instrument.currency}</small></span></div>
-      <label className="check"><input aria-label="추정 데이터 포함" type="checkbox" checked={estimatedEnabled} disabled={!data || isQqq5} onChange={event => { setEstimatedEnabled(event.target.checked); }} /> 추정 데이터 포함</label><p className="hint">{isQqq5 ? 'QQQ5는 실제 시세로 백테스트합니다.' : '상장 전 연구용 종가 · 분배금 제외 · 실제/추정 구간을 구분합니다.'}</p>
-      {estimated.loading && <p role="status">지수·금리 기반 추정 모델을 불러오고 있습니다…</p>}
-      {estimated.error && <p className="error" role="alert">{estimated.error}</p>}
-      {estimatedEnabled && <button type="button" disabled={estimated.loading} onClick={estimated.refresh}>{import.meta.env.MODE === 'pages' ? '배포된 추정 모델 다시 읽기' : '추정 모델 다시 생성'}</button>}
-      <label className="check"><input aria-label="환율 고려 원화 성과" type="checkbox" checked={fxEnabled} disabled={instrument.currency !== 'USD'} onChange={event => { setFxEnabled(event.target.checked); }} />환율 고려 · 원화 성과</label><p className="hint">{instrument.currency === 'KRW' ? 'TIGER는 원화 가격이므로 환율을 중복 적용하지 않습니다.' : '날짜별 관측 환율로 납입·인출·평가액을 별도 환산합니다.'}</p>
       <h2><b>02</b> 투자 전략</h2>
       <form onSubmit={event => { event.preventDefault(); setActive(true); setRun(value => value + 1); }}>
         <label className="field">전략 선택<select aria-label="전략 선택" value={kind} onChange={event => { setKind(event.target.value); }}><option value="hold">일시불 장기투자</option><option value="dca">일반 적립식 투자</option><option value="sma200">200일 이동평균선 돌파</option><option value="nasdaq-sma200">나스닥100 200일 이동평균선 돌파</option><option value="infinite">무한매수법 V3.0 · 참고 재현</option><option value="vr">VR 5.0 · 참고 재현</option></select></label>
@@ -310,7 +305,23 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
           </details><p className="hint"><a href="https://cafe.naver.com/infinitebuying/38944" target="_blank" rel="noreferrer">VR5.0 원문</a>의 기본공식·Pool 한도·예약매수표를 대조했습니다. <a href="https://www.youtube.com/watch?v=cIp8G3AVtnM&amp;t=55s" target="_blank" rel="noreferrer">원저자 영상 55~65초</a>에서 실력공식과 마지막 평가금 E도 대조했습니다. VR 입출금은 일반 적립식 납입금과 별도입니다.</p>
         </div>}
         {isQqq5 ? <p className="hint">QQQ5는 USD 기준 세전 일반계좌 백테스트를 지원합니다.</p> : <Phase2Settings symbol={symbol} currency={instrument.currency} value={phaseSettings} onChange={onPhaseSettings} />}
-        {!isQqq5 && phaseSettings.taxEnabled && <div className="phase-data-controls"><button type="button" disabled={instrument.currency==='USD'?fxLoading:taxBasis.loading} onClick={()=>{if(instrument.currency==='USD')setFxRevision(value=>value+1);else taxBasis.refresh();}}>{instrument.currency==='USD'?'세금용 환율 다시 조회':'과표기준가격 다시 조회'}</button><a href="#withdrawals-panel">중간 인출 일정 ↓</a></div>}
+        {!isQqq5 && phaseSettings.taxEnabled && <div className="phase-data-controls">
+          {instrument.currency === 'KRW' && <button type="button" disabled={taxBasis.loading} onClick={taxBasis.refresh}>과표기준가격 다시 조회</button>}
+          <a href="#withdrawals-panel">중간 인출 일정 ↓</a>
+        </div>}
+        <div className="data-options">
+          <div>
+            <label className="check"><input aria-label="추정 데이터 포함" type="checkbox" checked={estimatedEnabled} disabled={!data || isQqq5} onChange={event => { setEstimatedEnabled(event.target.checked); }} /> 추정 데이터 포함</label>
+            <p className="hint">{isQqq5 ? 'QQQ5는 실제 시세로 백테스트합니다.' : '상장 전 연구용 종가 · 분배금 제외 · 실제/추정 구간을 구분합니다.'}</p>
+            {estimated.loading && <p role="status">지수·금리 기반 추정 모델을 불러오고 있습니다…</p>}
+            {estimated.error && <p className="error" role="alert">{estimated.error}</p>}
+            {estimatedEnabled && <button type="button" disabled={estimated.loading} onClick={estimated.refresh}>{import.meta.env.MODE === 'pages' ? '배포된 추정 모델 다시 읽기' : '추정 모델 다시 생성'}</button>}
+          </div>
+          <div>
+            <label className="check"><input aria-label="환율 고려 원화 성과" type="checkbox" checked={fxEnabled} disabled={instrument.currency !== 'USD'} onChange={event => { setFxEnabled(event.target.checked); }} />환율 고려 · 원화 성과</label>
+            <p className="hint">{instrument.currency === 'KRW' ? 'TIGER는 원화 가격이므로 환율을 중복 적용하지 않습니다.' : '날짜별 관측 환율로 납입·인출·평가액을 별도 환산합니다.'}</p>
+          </div>
+        </div>
         <button className="run" disabled={!data || loading || !accountValid || (usesNasdaq && !nasdaq) || !['hold', 'dca', 'sma200', 'nasdaq-sma200', 'infinite', 'vr'].includes(kind)}>{calculation.status === 'working' ? '계산 중…' : '백테스트 시작'}</button>
       </form>
       <p className="hint">실행 후 기간·설정 변경 시 초기 조건으로 다시 계산합니다. V3·VR은 참고 재현이며 원화 성과는 사후 관측 환산입니다.</p>
