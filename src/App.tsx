@@ -367,19 +367,21 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
       {fxEnabled && instrument.currency === 'USD' && <KrwReport report={result?.krw} loading={fxLoading || calculation.status === 'working'} error={fxError || result?.krwError} accountDate={account?.date} onInspect={inspect} onRefresh={() => { setFxRevision(value => value + 1); }} />}
       <div className="calculation-status" role="status" aria-live="polite">{calculation.status === 'working' ? '선택 기간을 새로 계산하고 있습니다…' : calculation.status === 'error' ? calculation.error : result ? `${result.start} ~ ${result.end} · ${result.days.length.toLocaleString()} 거래일 · ${calculation.milliseconds?.toFixed(1)}ms${calculation.cached ? ' · 기본 계산 캐시' : ''}` : '기간과 설정을 확인하고 백테스트를 시작하세요.'}</div>
       <TradeHistory result={result} working={calculation.status === 'working'} currency={instrument.currency} onInspect={setInspected} />
-      {!isQqq5 && <><Suspense fallback={<div className="empty">세금 보고서를 불러오고 있습니다.</div>}><Phase2Report account={phaseSettings.account} report={result?.tax} accountReport={result?.accountReport} enabled={phaseSettings.taxEnabled}
+      {!isQqq5 && <Suspense fallback={<div className="empty">세금 보고서를 불러오고 있습니다.</div>}><Phase2Report initiallyOpen={instrument.currency === 'USD'} account={phaseSettings.account} report={result?.tax} accountReport={result?.accountReport} enabled={phaseSettings.taxEnabled}
         loading={calculation.status==='working'||(phaseSettings.taxEnabled&&(instrument.currency==='USD'?fxLoading:taxBasis.loading))}
         error={!accountValid?'현재 종목에서 사용할 계좌를 다시 선택하세요.':calculation.error||(instrument.currency==='USD'?fxError:taxBasis.error)||undefined}
-        scenario={phaseSettings.scenario} onScenario={scenario=>onPhaseSettings({scenario})} onInspect={inspect} /></Suspense>
-      <section aria-label="중간 인출 일정과 실행 결과">
+        scenario={phaseSettings.scenario} onScenario={scenario=>onPhaseSettings({scenario})} onInspect={inspect} /></Suspense>}
+      {(!isQqq5 || result?.comparison) && <section aria-label="중간 인출 일정과 실행 결과">
         <details className="section-disclosure"><summary>중간 인출 일정 · 실행 결과</summary><div className="section-disclosure-body">
-          <Phase2Withdrawals items={withdrawals} onChange={onWithdrawals} currency={instrument.currency} start={start} end={end} />
-          <Phase2WithdrawalLog report={result?.accountReport} start={start} end={end} onInspect={setInspected} />
+          {!isQqq5 && <>
+            <Phase2Withdrawals items={withdrawals} onChange={onWithdrawals} currency={instrument.currency} start={start} end={end} />
+            <Phase2WithdrawalLog report={result?.accountReport} start={start} end={end} onInspect={setInspected} />
+          </>}
+          {result?.comparison && <section className="panel holding-comparison"><div className="panel-head"><h2>동일 입출금 · 단순 보유 참고</h2><small>{instrument.currency} · 분배금 제외</small></div>
+            <div className="comparison-body"><p className="hint">선택 전략과 같은 거래일·실제 납입액·인출액을 사용합니다. 납입일 시가(추정 구간은 종가)로 잔액을 합산해 정수주 매수하고 보유합니다. 인출은 현금으로만 지급하며 강제매도하지 않습니다.</p>
+            {result.comparison.available ? <><p><span>최종 총자산</span><strong>{money(result.comparison.total)}</strong></p><p><span>순손익</span><strong>{money(result.comparison.profit)}</strong></p><p><span>선택 전략의 총자산 차이</span><strong>{money(final!.total - result.comparison.total)}</strong></p><p><span>단순 보유 XIRR</span><strong>{metric(result.comparison.xirr)}</strong></p><p><span>보유 주식 / 현금</span><strong>{result.comparison.quantity.toLocaleString()}주 / {money(result.comparison.cash)}</strong></p></> : <p role="status">{result.comparison.reason}</p>}</div>
+          </section>}
         </div></details>
-      </section></>}
-      {result?.comparison && <section className="panel holding-comparison"><div className="panel-head"><h2>동일 입출금 · 단순 보유 참고</h2><small>{instrument.currency} · 분배금 제외</small></div>
-        <div className="comparison-body"><p className="hint">선택 전략과 같은 거래일·실제 납입액·인출액을 사용합니다. 납입일 시가(추정 구간은 종가)로 잔액을 합산해 정수주 매수하고 보유합니다. 인출은 현금으로만 지급하며 강제매도하지 않습니다.</p>
-        {result.comparison.available ? <><p><span>최종 총자산</span><strong>{money(result.comparison.total)}</strong></p><p><span>순손익</span><strong>{money(result.comparison.profit)}</strong></p><p><span>선택 전략의 총자산 차이</span><strong>{money(final!.total - result.comparison.total)}</strong></p><p><span>단순 보유 XIRR</span><strong>{metric(result.comparison.xirr)}</strong></p><p><span>보유 주식 / 현금</span><strong>{result.comparison.quantity.toLocaleString()}주 / {money(result.comparison.cash)}</strong></p></> : <p role="status">{result.comparison.reason}</p>}</div>
       </section>}
       {estimate && <section className="panel estimate-model"><div className="panel-head"><h2>추정 모델 · 독립 검증</h2><strong>실제 운용 실적 아님</strong></div>
         <div className="model-summary"><p>추정 {estimate.points[0].date} ~ {estimate.points.at(-1)!.date} · 실제 {estimate.anchor.date} 이후</p>
