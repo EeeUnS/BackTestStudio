@@ -35,7 +35,6 @@ export function App({ holdingPreview = false }: { holdingPreview?: boolean }) {
   const [response, setResponse] = useState<MarketResponse>();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [revision, setRevision] = useState(0);
   const [phaseSettings,setPhaseSettings]=useState<Phase2SettingsValue>({account:'general',taxEnabled:true,costMethod:'fifo',scenario:'liquidate'});
   const [withdrawals,setWithdrawals]=useState<WithdrawalRequest[]>([]);
   useEffect(() => {
@@ -43,7 +42,7 @@ export function App({ holdingPreview = false }: { holdingPreview?: boolean }) {
     setLoading(true); setError(''); setResponse(undefined);
     async function load() {
       try {
-        const result = await fetchAppData('market', symbol, revision > 0, abort.signal);
+        const result = await fetchAppData('market', symbol, false, abort.signal);
         const body = await result.json();
         if (!result.ok) { throw new Error(body.error ?? `HTTP ${result.status}`); }
         const data = validateMarket(body.data);
@@ -55,14 +54,14 @@ export function App({ holdingPreview = false }: { holdingPreview?: boolean }) {
     }
     void load();
     return () => { abort.abort(); };
-  }, [symbol, revision]);
+  }, [symbol]);
   return <Workspace key={symbol} holdingPreview={holdingPreview} symbol={symbol} response={response} loading={loading} error={error} phaseSettings={phaseSettings} onPhaseSettings={patch=>setPhaseSettings(value=>({...value,...patch}))} withdrawals={withdrawals} onWithdrawals={setWithdrawals}
-    onSymbol={value => { setSymbol(value); setRevision(0); }} onRefresh={() => { setRevision(value => value + 1); }} />;
+    onSymbol={setSymbol} />;
 }
-function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phaseSettings,onPhaseSettings,withdrawals,onWithdrawals, holdingPreview }: {
+function Workspace({ symbol, response, loading, error, onSymbol, phaseSettings,onPhaseSettings,withdrawals,onWithdrawals, holdingPreview }: {
   holdingPreview: boolean;
   symbol: SymbolCode; response?: MarketResponse; loading: boolean; error: string;
-  onSymbol: (value: SymbolCode) => void; onRefresh: () => void;
+  onSymbol: (value: SymbolCode) => void;
   phaseSettings:Phase2SettingsValue;onPhaseSettings:(patch:Partial<Phase2SettingsValue>)=>void;
   withdrawals:WithdrawalRequest[];onWithdrawals:(items:WithdrawalRequest[])=>void;
 }) {
@@ -344,7 +343,7 @@ function Workspace({ symbol, response, loading, error, onSymbol, onRefresh, phas
       {result && <div className="performance-details">{result.days.some(day => day.estimated) && <strong>상장 전 추정 종가 체결 포함 · 가상 결과</strong>}<span>XIRR: {metric(result.metrics.xirr)}</span><span>CAGR: {metric(result.metrics.cagr)}</span><span>외부 인출 {money(final?.withdrawn)}</span></div>}
       {result && <div className="performance-details" aria-label="선택 기간 데이터 구성">{coverage.map(part => <span key={String(part.estimated)}>{part.estimated ? '추정 종가' : '실제 OHLC'} {part.start} ~ {part.end} · {part.count.toLocaleString()}거래일 ({percent(part.fraction)})</span>)}</div>}
       {final&&result?.accountReport?.withdrawals.some(request=>!request.excluded)&&<div className="phase-withdrawal-summary"><span>잔여 계좌자산 <strong>{money(final.total)}</strong></span><span>누적 인출 순수령 <strong>{money(result.accountReport.withdrawnNet)}</strong></span><span>자산 + 누적 순수령 <strong>{money(final.total+result.accountReport.withdrawnNet)}</strong></span><small>납부 세금과 최종 정산 세액은 아래 세금 보고서에서 별도로 확인합니다.</small></div>}
-      <section className="panel price-panel"><div className="panel-head"><div className="panel-title"><h2>가격과 매매</h2><small>{start && end ? `${start} — ${end}` : '종목을 선택해 시작하세요'}</small></div><div className="checkbox-row"><label className="check"><input type="checkbox" checked={markers} onChange={event => { setMarkers(event.target.checked); }} />차트에 매매 표시</label><button disabled={loading} onClick={onRefresh}>시세 새로 조회</button></div></div>
+      <section className="panel price-panel"><div className="panel-head"><div className="panel-title"><h2>가격과 매매</h2><small>{start && end ? `${start} — ${end}` : '종목을 선택해 시작하세요'}</small></div><div className="checkbox-row"><label className="check"><input type="checkbox" checked={markers} onChange={event => { setMarkers(event.target.checked); }} />차트에 매매 표시</label></div></div>
         {holdingPreview && <HoldingPeriodControls fixed={fixedHolding} years={holdingYears} message={holdingMessage} onYears={chooseHoldingYears} onMode={fixed => { if (fixed) { chooseHoldingYears(holdingYears); } else { setFixedHolding(false); setHoldingMessage(''); } }} />}
         {loading && <div className="empty" role="status">가격 이력을 조회하고 있습니다…</div>}
         {error && <div className="empty error" role="alert">{error}<p>새로 조회 버튼으로 재시도할 수 있습니다.</p></div>}
