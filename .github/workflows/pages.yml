@@ -21,6 +21,8 @@ jobs:
     if: github.ref_name == github.event.repository.default_branch && vars.BACKTEST_PAGES_ENABLED == 'true'
     runs-on: ubuntu-latest
     environment: github-pages
+    env:
+      PAGES_ARTIFACT_NAME: github-pages-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -56,8 +58,11 @@ jobs:
           node server/exportPages.ts refresh "$RUNNER_TEMP/backtest-data/cache"
       - uses: actions/upload-pages-artifact@v3
         with:
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
           path: dist
       - uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
       - name: Save last validated data
         shell: bash
         run: |
